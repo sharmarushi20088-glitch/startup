@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NIT Hamirpur Auth System</title>
+    <link rel="stylesheet" href="registration.css">
+    
+</head>
+<body>
+    <!-- Navigation Toggle for Mobile -->
+    <div id="navToggle" class="nav-toggle">
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
+
+
+
+    <!-- Main Container -->
+    <div class="auth-container">
+        <!-- Left Side - Branding (Hidden on mobile, visible on tablet+) -->
+        <div class="auth-branding">
+            <div class="brand-content">
+                <h1>NIT Hamirpur</h1>
+                <p>Student Authentication Portal</p>
+                <div class="brand-features">
+                    <div class="feature">
+                        <span class="icon">🎓</span>
+                        <p>Secure Access</p>
+                    </div>
+                    <div class="feature">
+                        <span class="icon">🔐</span>
+                        <p>College Email</p>
+                    </div>
+                    <div class="feature">
+                        <span class="icon">📱</span>
+                        <p>Multi-Device</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Side - Form Container -->
+        <div class="form-container">
+            <!-- Tab Navigation -->
+            <div class="tab-navigation">
+                <button class="tab-btn active" data-tab="login">
+                    <span>Login</span>
+                </button>
+                <button class="tab-btn" data-tab="signup">
+                    <span>Sign Up</span>
+                </button>
+            </div>
+
+            <!-- LOGIN FORM -->
+            <div id="login" class="auth-form active">
+                <div class="form-header">
+                    <h2>Welcome Back!</h2>
+                    <p>Login to your college account</p>
+                </div>
+
+                <form id="loginForm">
+                    <!-- College Email Login -->
+                    <div class="form-group">
+                        <label for="loginEmail">College Email</label>
+                        <div class="input-wrapper">
+                            <input 
+                                type="email" 
+                                id="loginEmail" 
+                                name="email" 
+                                placeholder="yourname@nith.ac.in"
+                                required
+                            >
+                            <span class="input-icon">📧</span>
+                        </div>
+                        <small class="hint">Use your official college email</small>
+                    </div>
+
+                    <!-- Password -->
+                    <div class="form-group">
+                        <label for="loginPassword">Password</label>
+                        <div class="input-wrapper">
+                            <input 
+                                type="password" 
+                                id="loginPassword" 
+                                name="password" 
+                                placeholder="Enter your password"
+                                required
+                            >
+                            <span class="input-icon toggle-password" data-target="loginPassword">👁️</span>
+                        </div>
+                    </div>
+
+                    <!-- Remember & Forgot -->
+                    <div class="form-extras">
+                        <label class="checkbox">
+                            <input type="checkbox" name="remember">
+                            <span>Remember me</span>
+                        </label>
+                        <a href="#" class="forgot-link">Forgot password?</a>
+                    </div>
+
+                    <!-- Login Button -->
+                    <button type="submit" class="btn btn-primary btn-full">
+                        Login
+                    </button>
+
+                    <!-- Divider -->
+                    <div class="divider">or continue with</div>
+
+                    <!-- Social Login -->
+                    <div class="social-login">
+                        <button type="button" class="social-btn" title="Google">
+                            <span>G</span>
+                        </button>
+                        <button type="button" class="social-btn" title="Microsoft">
+                            <span>MS</span>
+                        </button>
+                        <button type="button" class="social-btn" title="GitHub">
+                            <span>GH</span>
+                        </button>
+                    </div>
+
+                    <!-- Switch to Signup -->
+                    <p class="form-footer">
+                        Don't have an account? 
+                        <button type="button" class="switch-tab" data-tab="signup">Sign up here</button>
+                    </p>
+                </form>
+            </div>
+
+            <!-- SIGNUP FORM -->
+            <div id="signup" class="auth-form">
+                <div class="form-header">
+                    <h2>Create Account</h2>
+                    <p>Register your college account</p>
+                </div>
+
+                <form id="signupForm">
+                    <!-- Personal Info Row -->
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="firstName">First Name</label>
+                            <div class="input-wrapper">
+                                <input 
+                                    type="text" 
+                                    id="firstName" 
+                                    name="firstName" 
+                                    placeholder="John"
+                                    required
+                                >
+                                <span class="input-icon">👤</span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="lastName">Last Name</label>
+                            <div class="input-wrapper">
+                                <input 
+                                    type="text" 
+                                    id="lastName" 
+                                    name="lastName" 
+                                    placeholder="Doe"
+                                    required
+                                >
+                                <span class="input-icon">👤</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- College Email -->
+                    <div class="form-group">
+                        <label for="signupEmail">College Email</label>
+                        <div class="input-wrapper">
+                            <input 
+                                type="email" 
+                                id="signupEmail" 
+                                name="email" 
+                                placeholder="yourname@nith.ac.in"
+                                required
+                            >
+                            <span class="input-icon">📧</span>
+                        </div>
+                        <small class="hint">Must be your official college email</small>
+                    </div>
+
+                    <!-- Roll Number & Branch Row -->
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="rollNo">Roll Number</label>
+                            <div class="input-wrapper">
+                                <input 
+                                    type="text" 
+                                    id="rollNo" 
+                                    name="rollNo" 
+                                    placeholder="e.g., BIT001"
+                                    required
+                                >
+                                <span class="input-icon">🎫</span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="branch">Branch</label>
+                            <div class="input-wrapper">
+                                <select id="branch" name="branch" required>
+                                    <option value="">Select your branch</option>
+                                    <option value="cse">Computer Science (CSE)</option>
+                                    <option value="ece">Electronics (ECE)</option>
+                                    <option value="me">Mechanical (ME)</option>
+                                    <option value="ce">Civil (CE)</option>
+                                    <option value="ee">Electrical (EE)</option>
+                                    <option value="mfg">Manufacturing (MFG)</option>
+                                    <option value="bt">Biotechnology (BT)</option>
+                                </select>
+                                <span class="input-icon">🏛️</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ID Card Upload -->
+                    <div class="form-group">
+                        <label for="idCard">Upload ID Card Photo</label>
+                        <div class="file-upload">
+                            <input 
+                                type="file" 
+                                id="idCard" 
+                                name="idCard" 
+                                accept="image/*"
+                                required
+                            >
+                            <div class="file-upload-area">
+                                <span class="upload-icon">📸</span>
+                                <p>Click to upload or drag and drop</p>
+                                <small>PNG, JPG up to 5MB</small>
+                            </div>
+                            <div id="filePreview" class="file-preview"></div>
+                        </div>
+                    </div>
+
+                    <!-- Password -->
+                    <div class="form-group">
+                        <label for="signupPassword">Password</label>
+                        <div class="input-wrapper">
+                            <input 
+                                type="password" 
+                                id="signupPassword" 
+                                name="password" 
+                                placeholder="Create a strong password"
+                                required
+                            >
+                            <span class="input-icon toggle-password" data-target="signupPassword">👁️</span>
+                        </div>
+                        <small class="hint">Minimum 8 characters, include uppercase and number</small>
+                    </div>
+
+                    <!-- Confirm Password -->
+                    <div class="form-group">
+                        <label for="confirmPassword">Confirm Password</label>
+                        <div class="input-wrapper">
+                            <input 
+                                type="password" 
+                                id="confirmPassword" 
+                                name="confirmPassword" 
+                                placeholder="Confirm your password"
+                                required
+                            >
+                            <span class="input-icon">🔒</span>
+                        </div>
+                    </div>
+
+                    <!-- Terms Checkbox -->
+                    <label class="checkbox">
+                        <input type="checkbox" name="terms" required>
+                        <span>I agree to the <a href="#">Terms & Conditions</a></span>
+                    </label>
+
+                    <!-- Signup Button -->
+                    <button type="submit" class="btn btn-primary btn-full">
+                        Create Account
+                    </button>
+
+                    <!-- Switch to Login -->
+                    <p class="form-footer">
+                        Already have an account? 
+                        <button type="button" class="switch-tab" data-tab="login">Login here</button>
+                    </p>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- DASHBOARD PAGE - ADD THIS ENTIRE SECTION -->
+<div id="dashboard" class="page">
+    <div class="dashboard-container">
+        <header class="dashboard-header">
+            <div class="header-left">
+                <h1>🎓 NIT Hamirpur</h1>
+                <p class="header-subtitle">Student Portal</p>
+            </div>
+            <div class="header-right">
+                <button class="btn btn-outline" id="logoutBtn">Logout</button>
+            </div>
+        </header>
+
+        <main class="dashboard-main">
+            <section class="welcome-section">
+                <h2>Welcome Back, <span id="studentName">Student</span>! 👋</h2>
+                <p>Here's your dashboard overview</p>
+            </section>
+
+            <section class="info-section">
+                <div class="info-card">
+                    <div class="card-icon">📧</div>
+                    <div class="card-content">
+                        <p class="card-label">College Email</p>
+                        <p class="card-value" id="displayEmail">—</p>
+                    </div>
+                </div>
+
+                <div class="info-card">
+                    <div class="card-icon">🎫</div>
+                    <div class="card-content">
+                        <p class="card-label">Roll Number</p>
+                        <p class="card-value" id="displayRollNo">—</p>
+                    </div>
+                </div>
+
+                <div class="info-card">
+                    <div class="card-icon">🏛️</div>
+                    <div class="card-content">
+                        <p class="card-label">Branch</p>
+                        <p class="card-value" id="displayBranch">—</p>
+                    </div>
+                </div>
+
+                <div class="info-card">
+                    <div class="card-icon">📸</div>
+                    <div class="card-content">
+                        <p class="card-label">ID Card</p>
+                        <p class="card-value" id="displayIDStatus">Uploaded ✓</p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="actions-section">
+                <h3>Quick Actions</h3>
+                <div class="action-buttons">
+                    <button class="action-btn">
+                        <span class="action-icon">📚</span>
+                        <span>View Courses</span>
+                    </button>
+                    <button class="action-btn">
+                        <span class="action-icon">📊</span>
+                        <span>Check Grades</span>
+                    </button>
+                    <button class="action-btn">
+                        <span class="action-icon">⚙️</span>
+                        <span>Settings</span>
+                    </button>
+                    <button class="action-btn">
+                        <span class="action-icon">❓</span>
+                        <span>Help & Support</span>
+                    </button>
+                </div>
+            </section>
+
+            <section class="activity-section">
+                <h3>Recent Activity</h3>
+                <div class="activity-list">
+                    <div class="activity-item">
+                        <span class="activity-time">Today</span>
+                        <p>Account created successfully</p>
+                    </div>
+                    <div class="activity-item">
+                        <span class="activity-time">Today</span>
+                        <p>ID card uploaded and verified</p>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer class="dashboard-footer">
+            <p>&copy; 2025 NIT Hamirpur. All rights reserved.</p>
+        </footer>
+    </div>
+</div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast"></div>
+
+    <script src="registration.js"></script>
+</body>
+</html>
