@@ -15,6 +15,16 @@ const fileUpload = document.getElementById('idCard');
 const fileUploadArea = document.querySelector('.file-upload-area');
 const filePreview = document.getElementById('filePreview');
 const toast = document.getElementById('toast');
+const APIBASE = "http://127.0.0.1:4000/api";
+
+function saveSession(data) {
+  localStorage.setItem("token", data.token);
+  localStorage.setItem("currentUser", JSON.stringify(data.user));
+}
+
+function getToken() {
+  return localStorage.getItem("token");
+}
 
 // ============================================
 // TAB SWITCHING
@@ -149,7 +159,7 @@ function handleFileUpload(file) {
 // LOGIN FORM VALIDATION & SUBMISSION
 // ============================================
 
-loginForm.addEventListener('submit', (e) => {
+loginForm.addEventListener('submit',async (e) => {
     e.preventDefault();
     
     const email = document.getElementById('loginEmail').value.trim();
@@ -168,7 +178,7 @@ loginForm.addEventListener('submit', (e) => {
     }
     
     // If validation passes, simulate login
-    simulateLogin(email);
+await realLogin(email, password);
 });
 
 function isValidCollegeEmail(email) {
@@ -178,26 +188,46 @@ function isValidCollegeEmail(email) {
            (email.includes('@') && email.includes('.ac.in')); // Generic college email check
 }
 
-function simulateLogin(email) {
-    showToast('🔐 Logging in...', 'success');
-    
-    // Simulate network delay
-    setTimeout(() => {
-        showToast(`✅ Welcome back, ${email.split('@')[0]}!`, 'success');
-        
-        // Clear form
-        loginForm.reset();
-        
-        // You can redirect here or show dashboard
-        console.log('Login successful for:', email);
-    }, 1500);
+async function realLogin(email, password) {
+  try {
+    showToast("🔐 Logging in...", "success");
+
+    const res = await fetch(`${APIBASE}/auth/login`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, password })
+    });
+
+    const result = await res.json();
+
+    if (!res.ok) {
+      showToast(result.message || "Login failed", "error");
+      return;
+    }
+
+    saveSession(result);
+    showToast(`✅ Welcome back, ${result.user.firstName}!`, "success");
+    loginForm.reset();
+
+    // REDIRECT HERE
+setTimeout(() => {
+    window.location.href = 'mainpage.html'; 
+}, 1000); // 1-second delay so they see the success message
+
+    // optional
+    // showDashboard(result.user);
+    // window.location.href = 'mainpage.html';
+  } catch (err) {
+    console.error(err);
+    showToast("Network error. Try again.", "error");
+  }
 }
 
 // ============================================
 // SIGNUP FORM VALIDATION & SUBMISSION
 // ============================================
 
-signupForm.addEventListener('submit', (e) => {
+signupForm.addEventListener('submit', async (e) => {
     e.preventDefault();
     
     const formData = {
@@ -217,8 +247,8 @@ signupForm.addEventListener('submit', (e) => {
         return;
     }
     
-    // If validation passes, simulate signup
-    simulateSignup(formData);
+   // Real signup (call backend)
+  await realSignup(formData);
 });
 
 function validateSignupForm(data) {
@@ -284,34 +314,54 @@ function validateSignupForm(data) {
     return true;
 }
 
-function simulateSignup(data) {
-    showToast('📝 Creating your account...', 'success');
-    
-    // Simulate network delay
-    setTimeout(() => {
-        showToast(`🎉 Welcome, ${data.firstName}! Account created successfully!`, 'success');
-        
-        // Clear form
-        signupForm.reset();
-        filePreview.classList.remove('show');
-        filePreview.innerHTML = '';
-        
-        // Log the data (in real app, send to server)
-        console.log('Signup data:', {
-            name: `${data.firstName} ${data.lastName}`,
-            email: data.email,
-            rollNo: data.rollNo,
-            branch: data.branch,
-            idCardUploaded: true
-        });
-        
-        // Optionally switch to login tab
-        setTimeout(() => {
-            switchTab('login');
-            showToast('Please log in with your credentials', 'success');
-        }, 2000);
-    }, 2000);
+async function realSignup(data) {
+  try {
+    showToast("📝 Creating your account...", "success");
+
+    const fd = new FormData();
+    fd.append("firstName", data.firstName);
+    fd.append("lastName", data.lastName);
+    fd.append("email", data.email);
+    fd.append("rollNo", data.rollNo);
+    fd.append("branch", data.branch);
+    fd.append("password", data.password);
+    fd.append("confirmPassword", data.confirmPassword);
+    fd.append("terms", data.terms ? "on" : "");
+    fd.append("idCard", data.idCard);
+
+    const res = await fetch(`${APIBASE}/auth/signup`, {
+      method: "POST",
+      body: fd
+    });
+
+    const result = await res.json();
+
+    if (!res.ok) {
+      showToast(result.message || "Signup failed", "error");
+      return;
+    }
+
+    saveSession(result);
+    showToast(`🎉 Welcome, ${result.user.firstName}! Account created!`, "success");
+
+    // REDIRECT HERE
+setTimeout(() => {
+    window.location.href = 'mainpage.html';
+}, 1500); // Slightly longer delay for signup
+
+    signupForm.reset();
+    filePreview.classList.remove("show");
+    filePreview.innerHTML = "";
+
+    // optional
+    // showDashboard(result.user);
+    // switchTab('login');
+  } catch (err) {
+    console.error(err);
+    showToast("Network error. Try again.", "error");
+  }
 }
+
 
 // ============================================
 // TOAST NOTIFICATIONS
@@ -533,58 +583,38 @@ if (typeof module !== 'undefined' && module.exports) {
         switchTab
     };
 }
-function simulateSignup(data) {
-    showToast('📝 Creating your account...', 'success');
-    
-    // Simulate network delay
-    setTimeout(() => {
-        showToast(`🎉 Welcome, ${data.firstName}! Account created successfully!`, 'success');
-        
-        // Clear form
-        signupForm.reset();
-        filePreview.classList.remove('show');
-        filePreview.innerHTML = '';
-        
-        // Log the data (in real app, send to server)
-        console.log('Signup data:', {
-            name: `${data.firstName} ${data.lastName}`,
-            email: data.email,
-            rollNo: data.rollNo,
-            branch: data.branch,
-            idCardUploaded: true
-        });
-        
-        // Optionally switch to login tab
-        setTimeout(() => {
-            switchTab('login');
-            showToast('Please log in with your credentials', 'success');
-        }, 2000);
-    }, 2000);
-}
+
 function redirectToDashboard(userData) {
     window.location.href = 'mainpage.html';
 }
-function simulateLogin(email) {
-    showToast('🔐 Logging in...', 'success');
-    
-    setTimeout(() => {
-        const userData = {
-            id: Date.now(),
-            email: email,
-            firstName: email.split('@')[0],
-            lastName: 'Student',
-            rollNo: 'TEMP001',
-            branch: 'cse',
-            idCardUploaded: true,
-            createdAt: new Date().toISOString()
-        };
-        
-        localStorage.setItem('currentUser', JSON.stringify(userData));
-        showToast(`✅ Welcome back, ${userData.firstName}!`, 'success');
-        loginForm.reset();
-        
-        setTimeout(() => {
-            window.location.href = 'mainpage.html';
-        }, 1000);
-    }, 1500);
+function showDashboard(user) {
+  const authContainer = document.querySelector(".auth-container");
+  if (authContainer) authContainer.style.display = "none";
+
+  const dashboard = document.getElementById("dashboard");
+  if (dashboard) dashboard.style.display = "block";
+
+  document.getElementById("studentName").textContent = user.firstName || "Student";
+  document.getElementById("displayEmail").textContent = user.email || "";
+  document.getElementById("displayRollNo").textContent = user.rollNo || "";
+  document.getElementById("displayBranch").textContent = user.branch || "";
+  document.getElementById("displayIDStatus").textContent = user.idCardUrl ? "Uploaded" : "Not uploaded";
 }
+
+function logout() {
+  localStorage.removeItem("token");
+  localStorage.removeItem("currentUser");
+  location.reload();
+}
+
+const logoutBtn = document.getElementById("logoutBtn");
+if (logoutBtn) logoutBtn.addEventListener("click", logout);
+
+// Auto-show dashboard if already logged in
+(function autoLogin() {
+  const userRaw = localStorage.getItem("currentUser");
+  if (!userRaw) return;
+  try {
+    showDashboard(JSON.parse(userRaw));
+  } catch {}
+})();
